@@ -71,7 +71,7 @@ if __name__ == "__main__":
 	flip_rate = float(sys.argv[2])
 
 	# if the flip rate is high, we'll perform flips in batches, such that the
-	# wait time between batches does not exceed MIN_INTERVAL
+	# wait time between batches does not fall below MIN_INTERVAL
 	MIN_INTERVAL = 0.1
 
 	while True:
