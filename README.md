@@ -8,6 +8,8 @@ USAGE: irradiate.py target_pid flip_rate
 where flip_rate is measured in "bit flips per megabyte per second"
 ```
 
+Flips are performed via the `/proc/pid/maps` and `/proc/pid/mem` interfaces.
+
 `example_target.py` is a simple script that hashes a buffer at regular intervals. Bit-flips that modify the value of the buffer will cause the hash to change. Bit-flips elsewhere might crash or hang the process, or explode your computer - anything is possible!
 
 Example invocation:
