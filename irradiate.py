@@ -4,6 +4,7 @@ import re
 import sys
 import random
 import time
+import math
 import logging
 from typing import List, BinaryIO
 from dataclasses import dataclass
@@ -71,8 +72,8 @@ if __name__ == "__main__":
 	flip_rate = float(sys.argv[2])
 
 	# if the flip rate is high, we'll perform flips in batches, such that the
-	# wait time between batches does not fall below MIN_INTERVAL
-	MIN_INTERVAL = 0.1
+	# expected avg wait time between batches does not fall below MIN_INTERVAL
+	MIN_INTERVAL = 0.020 # 20ms
 
 	while True:
 		try:
@@ -95,14 +96,17 @@ if __name__ == "__main__":
 			flip_count = 1
 			interval = seconds_between_flips
 
-		logging.info(f"will perform {flip_count} flips and then wait {interval} seconds")
+		# I thiiiiiink this should give us a realistic exponential distribution?
+		exp_interval = math.log(random.random()) * -interval
+
+		logging.info(f"will perform {flip_count} flips and then wait {exp_interval:.2f} seconds ({interval:.2f} average)")
 
 		try:
 			with open(f"/proc/{target_pid}/mem", "wb+") as mem:
 				for _ in range(flip_count):
 					do_a_flip(mem, ranges)
 			
-			time.sleep(interval)
+			time.sleep(exp_interval)
 		except FileNotFoundError:
 			logging.error("FileNotFoundError - the target process probably died")
 			break

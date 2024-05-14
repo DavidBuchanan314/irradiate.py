@@ -33,6 +33,6 @@ After `t=5`, I ran `python3 irradiate.py 299761 10` in another terminal session,
 
 At `t=6` and `t=7`, you can see the buffer is getting corrupted, and later, the heap. Results may vary!
 
-Bit-flip intervals are currently evenly spaced in time. For fast flip rates this probably doesn't matter, but for slower rates I should implement realistic random delay distributions (TODO).
+Bit flip time intervals are randomised using an exponential distribution, such the average rate matches whatever you specified (in theory. I'm bad at maths.)
 
 Depending on the security config of your system, you may need to invoke `irradiate.py` with root privileges.
